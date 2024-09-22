@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="system" version="4.0" method="upgrade">
+    <name>PLG_SYSTEM_SPEARSTONEAUTH</name>
+    <author>Lance Douglas</author>
+    <creationDate>2024-09-21</creationDate>
+    <version>1.0.0</version>
+    <license>MIT License</license>
+    <copyright>(c) 2024 Spearstone, Inc.</copyright>
+    <authorEmail>lance@spearstone.partners</authorEmail>
+    <authorUrl>https://www.spearstone.partners</authorUrl>
+    <description>Spearstone Auth System Plugin</description>
+    <files>
+        <filename plugin="spearstoneauth">spearstoneauth.php</filename>
+        <folder>access</folder>
+        <filename>composer.json</filename>
+        <folder>vendor</folder>
+    </files>
+    <languages>
+        <language tag="en-GB">language/en-GB/plg_system_spearstoneauth.ini</language>
+        <language tag="en-GB">language/en-GB/plg_system_spearstoneauth.sys.ini</language>
+    </languages>
+</extension>

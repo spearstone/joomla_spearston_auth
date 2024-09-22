@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+    <fieldset name="general" label="COM_SPEARSTONEAUTH_FIELDSET_GENERAL">
+        <field name="extension_mode" type="list" label="COM_SPEARSTONEAUTH_FIELD_EXTENSION_MODE" description="COM_SPEARSTONEAUTH_DESC_EXTENSION_MODE" default="secondary">
+            <option value="disabled">Disabled</option>
+            <option value="secondary">Secondary to Joomla Frontend Auth</option>
+            <option value="primary">Primary Frontend Auth</option>
+        </field>
+    </fieldset>
+
+    <fieldset name="oidc" label="COM_SPEARSTONEAUTH_FIELDSET_OIDC">
+        <field name="client_id" type="text" label="COM_SPEARSTONEAUTH_FIELD_CLIENT_ID" required="true" />
+        <field name="client_secret" type="password" label="COM_SPEARSTONEAUTH_FIELD_CLIENT_SECRET" required="true" />
+        <field name="auth_endpoint" type="url" label="COM_SPEARSTONEAUTH_FIELD_AUTH_ENDPOINT" required="true" />
+        <field name="token_endpoint" type="url" label="COM_SPEARSTONEAUTH_FIELD_TOKEN_ENDPOINT" required="true" />
+        <field name="userinfo_endpoint" type="url" label="COM_SPEARSTONEAUTH_FIELD_USERINFO_ENDPOINT" />
+        <field name="redirect_uri" type="url" label="COM_SPEARSTONEAUTH_FIELD_REDIRECT_URI" description="COM_SPEARSTONEAUTH_DESC_REDIRECT_URI" required="true" />
+        <field name="scopes" type="text" label="COM_SPEARSTONEAUTH_FIELD_SCOPES" default="openid profile email" />
+        <field name="public_key" type="textarea" label="COM_SPEARSTONEAUTH_FIELD_PUBLIC_KEY" description="COM_SPEARSTONEAUTH_DESC_PUBLIC_KEY" rows="10" required="true" />
+    </fieldset>
+
+    <fieldset name="group_mapping" label="COM_SPEARSTONEAUTH_FIELDSET_GROUP_MAPPING">
+        <field name="group_map" type="subform" label="COM_SPEARSTONEAUTH_FIELD_GROUP_MAP" description="COM_SPEARSTONEAUTH_DESC_GROUP_MAP" multiple="true">
+            <form>
+                <fields name="group_map">
+                    <field name="role" type="text" label="COM_SPEARSTONEAUTH_FIELD_ROLE" required="true" />
+                    <field name="group_id" type="usergrouplist" label="COM_SPEARSTONEAUTH_FIELD_GROUP_ID" required="true" />
+                </fields>
+            </form>
+        </field>
+    </fieldset>
+</form>

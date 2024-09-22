@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="package" version="4.0" method="upgrade">
+    <name>Spearstone Auth Package</name>
+    <packagename>spearstone_auth</packagename>
+    <author>Lance Douglas</author>
+    <creationDate>2024-09-21</creationDate>
+    <version>1.0.0</version>
+    <license>MIT License</license>
+    <copyright>(c) 2024 Spearstone, Inc.</copyright>
+    <authorEmail>lance@spearstone.partners</authorEmail>
+    <authorUrl>https://www.spearstone.partners</authorUrl>
+    <description>Spearstone Auth Extension Package</description>
+    <files>
+        <file type="component" id="com_spearstoneauth">administrator/components/com_spearstoneauth/</file>
+        <file type="plugin" id="plg_system_spearstoneauth">plugins/system/spearstoneauth/</file>
+    </files>
+    <languages>
+        <language tag="en-GB">administrator/components/com_spearstoneauth/language/en-GB/en-GB.com_spearstoneauth.ini</language>
+        <language tag="en-GB">administrator/components/com_spearstoneauth/language/en-GB/en-GB.com_spearstoneauth.sys.ini</language>
+        <language tag="en-GB">plugins/system/spearstoneauth/language/en-GB/en-GB.plg_system_spearstoneauth.ini</language>
+        <language tag="en-GB">plugins/system/spearstoneauth/language/en-GB/en-GB.plg_system_spearstoneauth.sys.ini</language>
+    </languages>
+</extension>
