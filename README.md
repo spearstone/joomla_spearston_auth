@@ -1,3 +1,6 @@
+# UNDER INITIAL DEVELOPMENT
+ - Once this extension is fully developed and tested, this message will be removed and a release 1.0.0 will be made.
+
 # Spearstone Auth Extension for Joomla 4
 
 The `spearstone_auth` extension integrates an external OIDC-compliant Identity Provider (IDP), such as Ory Hydra, into Joomla 4. It allows you to control authentication and authorization via the IDP while leveraging Joomla's group-based access control. The extension consists of a system plugin and an administrator component.
