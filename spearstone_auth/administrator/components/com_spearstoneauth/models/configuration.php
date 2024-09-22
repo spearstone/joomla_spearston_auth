@@ -1,7 +1,7 @@
 <?php
 /**
- * @package     Joomla.Plugin
- * @subpackage  System.spearstoneauth
+ * @package     Joomla.Administrator
+ * @subpackage  com_spearstoneauth
  * @version     1.0.0
  * @license     MIT License
  * @author      Lance Douglas

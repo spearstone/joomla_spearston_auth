@@ -16,7 +16,7 @@
         <folder>vendor</folder>
     </files>
     <languages>
-        <language tag="en-GB">language/en-GB/plg_system_spearstoneauth.ini</language>
-        <language tag="en-GB">language/en-GB/plg_system_spearstoneauth.sys.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_system_spearstoneauth.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_system_spearstoneauth.sys.ini</language>
     </languages>
 </extension>

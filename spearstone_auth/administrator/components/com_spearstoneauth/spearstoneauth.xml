@@ -12,6 +12,7 @@
     <administration>
         <menu>COM_SPEARSTONEAUTH</menu>
         <files>
+            <filename>spearstoneauth.php</filename>
             <filename>controller.php</filename>
             <folder>models</folder>
             <folder>views</folder>
