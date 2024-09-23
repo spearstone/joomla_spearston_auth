@@ -131,17 +131,36 @@ class PlgSystemSpearstoneauth extends CMSPlugin
 
     protected function handleAuthError($error, $errorDescription)
     {
-        // Clean up the error description
+        $session = Factory::getSession();
+
+        // Sanitize the error parameters
         $error = htmlspecialchars($error, ENT_QUOTES, 'UTF-8');
         $errorDescription = htmlspecialchars($errorDescription, ENT_QUOTES, 'UTF-8');
 
-        // Optionally, log the error
-        Factory::getApplication()->enqueueMessage("Authentication Error: $error - $errorDescription", 'error');
+        // Build the error message
+        $errorMessage = "Authentication Error: $error - $errorDescription";
 
-        // Redirect to a safe page or display an error page
+        // Enqueue the error message
+        $this->app->enqueueMessage($errorMessage, 'error');
+
+        // Clear the authentication handling flag
+        $session->clear('spearstoneauth_handling');
+
+        // Set the error handled flag
+        $session->set('spearstoneauth_error_handled', true);
+
+        // Redirect to a safe page
         $homeUrl = Route::_('index.php', false);
-        $this->app->redirect($homeUrl);
-        $this->app->close();
+
+        // Ensure no output has been sent yet
+        if (!headers_sent()) {
+            $this->app->redirect($homeUrl);
+            $this->app->close();
+        } else {
+            // As a fallback, use JavaScript redirect
+            echo "<script>window.location.href='" . htmlspecialchars($homeUrl) . "';</script>";
+            exit;
+        }
     }
 
     protected function isProtectedResource()
