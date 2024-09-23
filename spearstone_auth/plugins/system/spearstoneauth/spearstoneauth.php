@@ -149,18 +149,20 @@ class PlgSystemSpearstoneauth extends CMSPlugin
         // Set the error handled flag
         $session->set('spearstoneauth_error_handled', true);
 
+        // Clean the output buffer
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+
         // Redirect to a safe page
         $homeUrl = Route::_('index.php', false);
 
-        // Ensure no output has been sent yet
-        if (!headers_sent()) {
-            $this->app->redirect($homeUrl);
-            $this->app->close();
-        } else {
-            // As a fallback, use JavaScript redirect
-            echo "<script>window.location.href='" . htmlspecialchars($homeUrl) . "';</script>";
-            exit;
-        }
+        // Redirect and close the application
+        $this->app->redirect($homeUrl);
+        $this->app->close();
+
+        // Ensure no further code is executed
+        exit;
     }
 
     protected function isProtectedResource()
