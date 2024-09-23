@@ -13,6 +13,8 @@
 
 defined('_JEXEC') or die;
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Access\Access as CoreAccess;
