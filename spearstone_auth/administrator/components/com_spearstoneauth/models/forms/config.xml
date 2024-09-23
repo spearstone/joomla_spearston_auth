@@ -16,7 +16,17 @@
         <field name="userinfo_endpoint" type="url" label="COM_SPEARSTONEAUTH_FIELD_USERINFO_ENDPOINT" />
         <field name="redirect_uri" type="url" label="COM_SPEARSTONEAUTH_FIELD_REDIRECT_URI" description="COM_SPEARSTONEAUTH_DESC_REDIRECT_URI" required="true" />
         <field name="scopes" type="text" label="COM_SPEARSTONEAUTH_FIELD_SCOPES" default="openid profile email" />
-        <field name="public_key" type="textarea" label="COM_SPEARSTONEAUTH_FIELD_PUBLIC_KEY" description="COM_SPEARSTONEAUTH_DESC_PUBLIC_KEY" rows="10" required="true" />
+    </fieldset>
+
+    <!-- New fieldset for key configuration -->
+    <fieldset name="key_configuration" label="COM_SPEARSTONEAUTH_FIELDSET_KEY_CONFIGURATION">
+        <field name="key_source" type="list" label="COM_SPEARSTONEAUTH_FIELD_KEY_SOURCE" description="COM_SPEARSTONEAUTH_DESC_KEY_SOURCE" default="pem">
+            <option value="pem">PEM-formatted Public Key</option>
+            <option value="jwks">JWKS URI</option>
+        </field>
+
+        <field name="public_key" type="textarea" label="COM_SPEARSTONEAUTH_FIELD_PUBLIC_KEY" description="COM_SPEARSTONEAUTH_DESC_PUBLIC_KEY" rows="10" required="true" showon="key_source:pem" />
+        <field name="jwks_uri" type="url" label="COM_SPEARSTONEAUTH_FIELD_JWKS_URI" description="COM_SPEARSTONEAUTH_DESC_JWKS_URI" required="true" showon="key_source:jwks" />
     </fieldset>
 
     <fieldset name="group_mapping" label="COM_SPEARSTONEAUTH_FIELDSET_GROUP_MAPPING">

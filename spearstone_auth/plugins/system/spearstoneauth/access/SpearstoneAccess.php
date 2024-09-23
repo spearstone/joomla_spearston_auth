@@ -19,6 +19,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Component\ComponentHelper;
 use League\OAuth2\Client\Provider\GenericProvider;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Cache\Controller\CallbackController;
+use Joomla\CMS\Cache\CacheControllerFactory;
 
 class SpearstoneAccess extends Access
 {
@@ -182,7 +184,127 @@ class SpearstoneAccess extends Access
     protected static function decodeJwt($jwt, $publicKey)
     {
         // Use a JWT library to decode and verify the JWT
-        $decoded = \Firebase\JWT\JWT::decode($jwt, \Firebase\JWT\Key\key($publicKey, 'RS256'));
+        $params = ComponentHelper::getParams('com_spearstoneauth');
+        $keySource = $params->get('key_source', 'pem');
+
+        if ($keySource === 'pem') {
+            $decoded = \Firebase\JWT\JWT::decode($jwt, \Firebase\JWT\Key\key($publicKey, 'RS256'));
+        } elseif ($keySource === 'jwks') {
+            $decoded = self::decodeJwtWithJwks($jwt);
+        } else {
+            throw new \Exception('Invalid key source configuration.');
+        }
+
         return $decoded;
+    }
+
+    protected static function decodeJwtWithJwks($jwt)
+    {
+        $params = ComponentHelper::getParams('com_spearstoneauth');
+        $jwksUri = $params->get('jwks_uri');
+
+        if (empty($jwksUri)) {
+            throw new \Exception('JWKS URI is not configured.');
+        }
+
+        $jwks = self::getCachedJwks($jwksUri);
+
+        // Decode the JWT header to get the kid
+        $tokenParts = explode('.', $jwt);
+        $header = json_decode(base64_decode($tokenParts[0]));
+
+        if (!isset($header->kid)) {
+            throw new \Exception('No kid found in token.');
+        }
+
+        // Find the key with the matching kid
+        $key = null;
+        foreach ($jwks['keys'] as $jwk) {
+            if ($jwk['kid'] === $header->kid) {
+                $key = $jwk;
+                break;
+            }
+        }
+
+        if (!$key) {
+            throw new \Exception('Unable to find appropriate key for token verification.');
+        }
+
+        // Build the public key
+        $publicKey = self::jwkToPem($key);
+
+        // Decode and verify the token
+        $decoded = \Firebase\JWT\JWT::decode($jwt, \Firebase\JWT\Key\key($publicKey, $key['alg']));
+
+        return $decoded;
+    }
+
+    protected static function getCachedJwks($jwksUri)
+    {
+        $cache = CacheControllerFactory::getCacheController('callback', ['defaultgroup' => 'spearstoneauth']);
+
+        // Cache the JWKS for 6 hours (21600 seconds)
+        $jwks = $cache->get(
+            function () use ($jwksUri) {
+                $client = new \GuzzleHttp\Client();
+                $response = $client->get($jwksUri);
+                $body = $response->getBody();
+                $jwks = json_decode($body, true);
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new \Exception('Error decoding JWKS: ' . json_last_error_msg());
+                }
+
+                return $jwks;
+            },
+            [$jwksUri],
+            md5($jwksUri),
+            21600 // Cache lifetime in seconds
+        );
+
+        return $jwks;
+    }
+
+    protected static function jwkToPem($jwk)
+    {
+        if ($jwk['kty'] !== 'RSA') {
+            throw new \Exception('Only RSA keys are supported.');
+        }
+
+        $n = self::base64urlDecode($jwk['n']);
+        $e = self::base64urlDecode($jwk['e']);
+        $publicKey = self::convertRSA($n, $e);
+
+        return $publicKey;
+    }
+
+    protected static function base64urlDecode($data)
+    {
+        $remainder = strlen($data) % 4;
+        if ($remainder) {
+            $padlen = 4 - $remainder;
+            $data .= str_repeat('=', $padlen);
+        }
+
+        $decoded = base64_decode(strtr($data, '-_', '+/'));
+
+        return $decoded;
+    }
+
+    protected static function convertRSA($n, $e)
+    {
+        $components = [
+            'modulus' => $n,
+            'publicExponent' => $e,
+        ];
+
+        $rsa = \phpseclib3\Crypt\RSA::loadPublicKey(
+            [
+                'n' => $components['modulus'],
+                'e' => $components['publicExponent'],
+            ]
+        );
+
+        return $rsa->savePublicKey('PKCS8');
     }
 }

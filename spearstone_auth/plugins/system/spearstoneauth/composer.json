@@ -1,6 +1,8 @@
 {
     "require": {
         "league/oauth2-client": "^2.7",
-        "firebase/php-jwt": "^6.10"
+        "firebase/php-jwt": "^6.10",
+        "phpseclib/phpseclib": "^3.0",
+        "guzzlehttp/guzzle": "^7.9"
     }
 }
