@@ -67,6 +67,20 @@ class PlgSystemSpearstoneauth extends CMSPlugin
             return;
         }
 
+        $session = Factory::getSession();
+
+        // Check if we have already handled an authentication error
+        if ($session->get('spearstoneauth_error_handled', false)) {
+            // Clear the flag for future requests
+            $session->clear('spearstoneauth_error_handled');
+            return;
+        }
+
+        // Check if we are already processing authentication
+        if ($session->get('spearstoneauth_handling', false)) {
+            return;
+        }
+
         // Get the input
         $input = $this->app->input;
 
@@ -77,6 +91,7 @@ class PlgSystemSpearstoneauth extends CMSPlugin
         if ($error) {
             // Handle the OAuth error
             $this->handleAuthError($error, $errorDescription);
+            // After handling the error, return to prevent further processing
             return;
         }
 
@@ -103,8 +118,14 @@ class PlgSystemSpearstoneauth extends CMSPlugin
         $isProtectedResource = $this->isProtectedResource();
 
         if ($isProtectedResource) {
+            // Set session variable to prevent recursive handling
+            $session->set('spearstoneauth_handling', true);
+
             // Redirect to IDP login
             $this->redirectToIdP();
+
+            // After redirecting, return to prevent further processing
+            return;
         }
     }
 
