@@ -16,5 +16,18 @@ use Joomla\CMS\MVC\Controller\FormController;
 
 class SpearstoneauthControllerConfiguration extends FormController
 {
-    // You can add custom methods here if needed
+    // Override the parent constructor if necessary
+    public function __construct($config = array())
+    {
+        parent::__construct($config);
+
+        // Set the redirect on successful save
+        $this->registerTask('apply', 'save');
+    }
+
+    protected function allowSave($data = array(), $key = 'id')
+    {
+        // Allow save without any special permission checks
+        return true;
+    }
 }

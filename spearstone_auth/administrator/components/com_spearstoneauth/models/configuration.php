@@ -13,10 +13,13 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\MVC\Model\AdminModel;
-use Joomla\CMS\Factory;
+defined('_JEXEC') or die;
 
-class SpearstoneauthModelConfiguration extends AdminModel
+use Joomla\CMS\MVC\Model\FormModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+
+class SpearstoneauthModelConfiguration extends FormModel
 {
     protected $text_prefix = 'COM_SPEARSTONEAUTH';
 
@@ -37,44 +40,48 @@ class SpearstoneauthModelConfiguration extends AdminModel
 
     protected function loadFormData()
     {
-        $data = (array) Factory::getApplication()->getUserState(
-            'com_spearstoneauth.edit.configuration.data',
-            array()
-        );
-
-        if (empty($data)) {
-            $data = $this->getItem();
-        }
-
+        $data = $this->getItem();
         return $data;
     }
 
     public function getItem($pk = null)
     {
-        // Get the configuration from the component parameters
-        $params = $this->getComponentParams();
-
+        // Get the component params
+        $params = \Joomla\CMS\Component\ComponentHelper::getParams('com_spearstoneauth');
         return $params->toArray();
     }
 
     public function save($data)
     {
+        // Load the component's row from #__extensions
         $component = \Joomla\CMS\Component\ComponentHelper::getComponent('com_spearstoneauth');
-        $table = $this->getTable();
+        $id = $component->id;
 
-        $table->load($component->id);
-        $table->bind(array('params' => $data));
+        // Get the JTable extension instance
+        $table = Table::getInstance('extension');
 
+        if (!$table->load($id)) {
+            $this->setError('Failed to load component for saving configuration.');
+            return false;
+        }
+
+        // Merge existing params with new data
+        $params = json_decode($table->params, true);
+        if (empty($params)) {
+            $params = array();
+        }
+
+        $params = array_merge($params, $data);
+
+        // Save the params back to the table
+        $table->params = json_encode($params);
+
+        // Save the table
         if (!$table->check() || !$table->store()) {
             $this->setError($table->getError());
             return false;
         }
 
         return true;
-    }
-
-    protected function getComponentParams()
-    {
-        return \Joomla\CMS\Component\ComponentHelper::getParams('com_spearstoneauth');
     }
 }
