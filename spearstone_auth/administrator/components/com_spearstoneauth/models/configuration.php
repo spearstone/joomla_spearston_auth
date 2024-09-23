@@ -84,4 +84,10 @@ class SpearstoneauthModelConfiguration extends FormModel
 
         return true;
     }
+
+    //override to ensure the extension table is used instead of a 'configuration' table that doesn't exist
+    public function getTable($type = 'Extension', $prefix = 'JTable', $config = array())
+    {
+        return Table::getInstance($type, $prefix, $config);
+    }
 }

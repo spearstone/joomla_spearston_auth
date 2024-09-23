@@ -25,8 +25,8 @@
             <option value="jwks">JWKS URI</option>
         </field>
 
-        <field name="public_key" type="textarea" label="COM_SPEARSTONEAUTH_FIELD_PUBLIC_KEY" description="COM_SPEARSTONEAUTH_DESC_PUBLIC_KEY" rows="10" required="true" showon="key_source:pem" />
-        <field name="jwks_uri" type="url" label="COM_SPEARSTONEAUTH_FIELD_JWKS_URI" description="COM_SPEARSTONEAUTH_DESC_JWKS_URI" required="true" showon="key_source:jwks" />
+        <field name="public_key" type="textarea" label="COM_SPEARSTONEAUTH_FIELD_PUBLIC_KEY" description="COM_SPEARSTONEAUTH_DESC_PUBLIC_KEY" rows="10" showon="key_source:pem" />
+        <field name="jwks_uri" type="url" label="COM_SPEARSTONEAUTH_FIELD_JWKS_URI" description="COM_SPEARSTONEAUTH_DESC_JWKS_URI" showon="key_source:jwks" />
     </fieldset>
 
     <fieldset name="group_mapping" label="COM_SPEARSTONEAUTH_FIELDSET_GROUP_MAPPING">

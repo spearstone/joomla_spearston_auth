@@ -21,7 +21,7 @@ HTMLHelper::_('behavior.keepalive');
 
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_spearstoneauth'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_spearstoneauth&task=configuration.save'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
     <?php echo $this->form->renderFieldset('general'); ?>
     <?php echo $this->form->renderFieldset('oidc'); ?>
     <?php echo $this->form->renderFieldset('key_configuration'); ?>
