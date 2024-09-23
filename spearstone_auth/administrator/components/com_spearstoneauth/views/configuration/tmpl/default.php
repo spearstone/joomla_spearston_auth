@@ -24,6 +24,7 @@ HTMLHelper::_('behavior.keepalive');
 <form action="<?php echo JRoute::_('index.php?option=com_spearstoneauth'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
     <?php echo $this->form->renderFieldset('general'); ?>
     <?php echo $this->form->renderFieldset('oidc'); ?>
+    <?php echo $this->form->renderFieldset('key_configuration'); ?>
     <?php echo $this->form->renderFieldset('group_mapping'); ?>
 
     <input type="hidden" name="task" value="" />
