@@ -14,6 +14,7 @@
         <files>
             <filename>spearstoneauth.php</filename>
             <filename>controller.php</filename>
+            <folder>controllers</folder>
             <folder>models</folder>
             <folder>views</folder>
             <folder>language</folder>

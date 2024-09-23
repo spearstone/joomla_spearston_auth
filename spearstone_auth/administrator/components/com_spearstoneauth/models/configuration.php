@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package     Joomla.Administrator
  * @subpackage  com_spearstoneauth
@@ -58,12 +59,11 @@ class SpearstoneauthModelConfiguration extends AdminModel
 
     public function save($data)
     {
-        // Save the configuration to the component parameters
         $component = \Joomla\CMS\Component\ComponentHelper::getComponent('com_spearstoneauth');
-        $table = JTable::getInstance('extension');
-        $table->load($component->id);
+        $table = $this->getTable();
 
-        $table->set('params', json_encode($data));
+        $table->load($component->id);
+        $table->bind(array('params' => $data));
 
         if (!$table->check() || !$table->store()) {
             $this->setError($table->getError());

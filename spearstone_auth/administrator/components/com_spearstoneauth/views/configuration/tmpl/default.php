@@ -14,26 +14,17 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_spearstoneauth&view=configuration'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
-    <fieldset>
-        <legend><?php echo Text::_('COM_SPEARSTONEAUTH_FIELDSET_GENERAL'); ?></legend>
-        <?php echo $this->form->renderFieldset('general'); ?>
-    </fieldset>
 
-    <fieldset>
-        <legend><?php echo Text::_('COM_SPEARSTONEAUTH_FIELDSET_OIDC'); ?></legend>
-        <?php echo $this->form->renderFieldset('oidc'); ?>
-    </fieldset>
-
-    <fieldset>
-        <legend><?php echo Text::_('COM_SPEARSTONEAUTH_FIELDSET_GROUP_MAPPING'); ?></legend>
-        <?php echo $this->form->renderFieldset('group_mapping'); ?>
-    </fieldset>
+<form action="<?php echo JRoute::_('index.php?option=com_spearstoneauth'); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+    <?php echo $this->form->renderFieldset('general'); ?>
+    <?php echo $this->form->renderFieldset('oidc'); ?>
+    <?php echo $this->form->renderFieldset('group_mapping'); ?>
 
     <input type="hidden" name="task" value="" />
     <?php echo HTMLHelper::_('form.token'); ?>

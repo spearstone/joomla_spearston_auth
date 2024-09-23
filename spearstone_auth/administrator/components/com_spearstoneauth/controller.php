@@ -17,4 +17,9 @@ use Joomla\CMS\MVC\Controller\BaseController;
 class SpearstoneauthController extends BaseController
 {
     protected $default_view = 'configuration';
+
+    public function getModel($name = 'Configuration', $prefix = 'SpearstoneauthModel', $config = array('ignore_request' => true))
+    {
+        return parent::getModel($name, $prefix, $config);
+    }
 }
