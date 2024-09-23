@@ -67,6 +67,19 @@ class PlgSystemSpearstoneauth extends CMSPlugin
             return;
         }
 
+        // Get the input
+        $input = $this->app->input;
+
+        // Check for OAuth error parameters
+        $error = $input->get('error', null, 'raw');
+        $errorDescription = $input->get('error_description', null, 'raw');
+
+        if ($error) {
+            // Handle the OAuth error
+            $this->handleAuthError($error, $errorDescription);
+            return;
+        }
+
         // Get the current user
         $user = Factory::getUser();
 
@@ -93,6 +106,21 @@ class PlgSystemSpearstoneauth extends CMSPlugin
             // Redirect to IDP login
             $this->redirectToIdP();
         }
+    }
+
+    protected function handleAuthError($error, $errorDescription)
+    {
+        // Clean up the error description
+        $error = htmlspecialchars($error, ENT_QUOTES, 'UTF-8');
+        $errorDescription = htmlspecialchars($errorDescription, ENT_QUOTES, 'UTF-8');
+
+        // Optionally, log the error
+        Factory::getApplication()->enqueueMessage("Authentication Error: $error - $errorDescription", 'error');
+
+        // Redirect to a safe page or display an error page
+        $homeUrl = Route::_('index.php', false);
+        $this->app->redirect($homeUrl);
+        $this->app->close();
     }
 
     protected function isProtectedResource()
